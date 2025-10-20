@@ -113,37 +113,6 @@ public class TaskServiceImpl implements Taskservice {
                 .orElseThrow(()-> new IllegalArgumentException("Task List not found"));
         Task taskToBeDeleted = taskList.getTasks().stream().filter(task -> task.getId().equals(taskId)).findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Task not found "));
-        /*
-        // The issue: Deleted task reappears when refresh because it's still in the TaskList's tasks collection in memory.
-        // When you save taskList again, JPA may re-sync the collection and restore the deleted task.
-        // Correct approach:
-        // 1. Find the TaskList by ID
-                TaskList taskList = taskListRepository.findById(taskListId)
-                        .orElseThrow(() -> new IllegalArgumentException("Task List not found"));
-        // 2. Find the task to delete
-                Task taskToBeDeleted = taskList.getTasks().stream()
-                        .filter(task -> task.getId().equals(taskId))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Task not found"));
-        // 3. Remove the task from the tasks list in memory
-                taskList.getTasks().remove(taskToBeDeleted);
-        // 4. Delete the task from the repository
-                taskRepository.delete(taskToBeDeleted);
-        // 5. Save the updated task list
-                taskListRepository.save(taskList);
-        // Notes:
-        // - Using taskList.getTasks().remove(...) ensures JPA does not restore the deleted task.
-        // - Best practice: In TaskList entity, use orphanRemoval = true:
-        //   @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, orphanRemoval = true)
-        //   private List<Task> tasks;
-        // - With orphanRemoval = true, removing from the list automatically deletes the task from DB.
-        */
-        // When deleting a task, also remove it from the TaskList's Java list.
-        // If you only delete it from the database, it might reappear when you refresh the browser.
-        // This happens because the TaskList still holds the task in its in-memory list,
-        // and saving the TaskList again can make JPA restore the deleted task.
-        // Always remove it from the list, and consider using orphanRemoval in your mappings(when you're working with them).
-        // If you want to know what happens just comment the below line, the deleted task appears after refresh
         taskList.getTasks().remove(taskToBeDeleted);
         taskRepository.delete(taskToBeDeleted);
         taskListRepository.save(taskList);
