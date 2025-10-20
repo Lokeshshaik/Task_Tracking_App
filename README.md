@@ -28,10 +28,13 @@ Built with a **Spring Boot backend**, **JPA**, and a **PostgreSQL** database, it
 1. Clone the repo:
 ```bash
 git clone https://github.com/Lokeshshaik/Task_Tracking_App.git
+```
+2.Navigate to the backend folder
+```bash
 cd Task_Tracking_App/backend
 ```
-2. Configure application.properties with your PostgreSQL credentials:
-3. Run
+3. Configure application.properties with your PostgreSQL credentials:
+4. Run
 ```bash
 mvn spring-boot:run
 ```
