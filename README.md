@@ -39,8 +39,8 @@ cd Task_Tracking_App/backend
 ```bash
 docker-compose up -d
 ```  
-3. Configure application.properties with your PostgreSQL credentials:
-4. Run
+4. Configure application.properties with your PostgreSQL credentials:
+5. Run
 ```bash
 mvn spring-boot:run
 ```
